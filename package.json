@@ -1,6 +1,6 @@
 {
   "name": "search-for",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A CLI tool that uses headless Chromium and search engine to fetch information about a subject. This project was born out of frustration over lack of a good terminal web browser.",
   "main": "cli.js",
   "bin": {
