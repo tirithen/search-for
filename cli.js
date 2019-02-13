@@ -4,7 +4,8 @@ const {search} = require('./query');
 const {getContentFor} = require('./scrape');
 const {printMarkdown} = require('./printMarkdown');
 
-const query = process.argv.slice(2).join(' ').trim();
+const startsWithDash = /^-{2}[^\s]+/;
+const query = process.argv.slice(2).filter((arg) => !startsWithDash.test(arg)).join(' ').trim();
 
 if (!query) {
   console.log('Usage: search [QUERY]');

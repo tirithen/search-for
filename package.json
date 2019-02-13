@@ -1,6 +1,6 @@
 {
   "name": "search-for",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool that uses headless Chromium and search engine to fetch information about a subject. This project was born out of frustration over lack of a good terminal web browser.",
   "main": "cli.js",
   "bin": {
@@ -14,7 +14,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "google": "^2.1.0",
-    "marked": "^0.5.2",
+    "marked": "^0.6.0",
     "marked-terminal": "^3.1.1",
     "promised-cache": "^1.1.2",
     "puppeteer": "^1.10.0",
