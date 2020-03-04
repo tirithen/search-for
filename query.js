@@ -1,14 +1,16 @@
 const {join} = require('path');
-const google = require('google');
+const googleIt = require('google-it');
 
 const Cache = require('promised-cache');
 const cache = new Cache(join(__dirname, '.cache', 'search'), 3600 * 1000);
 
-module.exports.NoResults = class NoResults extends Error {
+class NoResults extends Error {
   constructor(message) {
     super(message || 'No results found');
   }
 };
+
+module.exports.NoResults = NoResults;
 
 module.exports.search = function search(query, disableCache = false) {
   return new Promise(async (resolve, reject) => {
@@ -16,18 +18,16 @@ module.exports.search = function search(query, disableCache = false) {
     if (cachedResult) {
       resolve(cachedResult);
     } else {
-      google(query, (error, result) => {
-        if (error) {
-          reject(error);
-        } else if (Array.isArray(result.links) && result.links.length > 0) {
-          resolve(result.links);
+      googleIt({query, 'no-display': true}).then((results) => {
+        if (Array.isArray(results) && results.length > 0) {
+          resolve(results);
           if (!disableCache) {
-            cache.set(query, result.links);
+            cache.set(query, results);
           }
         } else {
           reject(new NoResults(`No results found for: ${query}`));
         }
-      });
+      }).catch(() => {reject(new NoResults(`No results found for: ${query}`))});
     }
   });
 };

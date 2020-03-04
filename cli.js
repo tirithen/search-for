@@ -14,13 +14,13 @@ if (!query) {
 
 search(query).then((results) => {
   const firstResult = results[0];
-  getContentFor(firstResult.href)
+  getContentFor(firstResult.link)
     .then(printMarkdown)
     .catch((error) => {
-      console.error(error.getMessage());
+      console.error(error.message);
       process.exit(1);
     });
 }).catch((error) => {
-  console.error(error.getMessage());
+  console.error(error.message);
   process.exit(1);
 });
