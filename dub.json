@@ -1,0 +1,13 @@
+{
+	"authors": [
+		"Fredrik Söderström"
+	],
+	"copyright": "Copyright © 2020, Fredrik Söderström",
+	"dependencies": {
+		"arsd-official:dom": "~>8.2.0",
+		"arsd-official:http": "~>8.2.0"
+	},
+	"description": "A minimal D application.",
+	"license": "proprietary",
+	"name": "search-for2"
+}

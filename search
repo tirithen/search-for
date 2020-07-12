@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-
-node $DIRECTORY/../search-for/cli.js --color $@ | less
