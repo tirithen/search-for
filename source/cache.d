@@ -1,27 +1,32 @@
 module searchfor.cache;
 
-T cacheWrite(T)(string key, T data) {
-  import std.file : File, mkdirRecurse;
+void cacheWrite(T)(string key, T data) {
+  import std.file : write, mkdirRecurse;
+  import std.base64 : Base64;
+  import std.conv : to;
+  import std.path : expandTilde;
+  import msgpack : pack;
 
-  const directory = "~/.cache/search-for";
-  const filename = directory ~ "/" ~ key;
-
+  const directory = "~/.cache/search".expandTilde;
   mkdirRecurse(directory);
 
-  auto file = File(filename, "w");
-  file.rawWrite(data);
-  file.close();
+  const filename = directory ~ "/" ~ Base64.encode(cast(ubyte[]) key);
+  write(filename, pack(data));
 }
 
 import std.typecons : Nullable;
 import core.time : Duration;
 
 Nullable!T cacheRead(T)(string key, Duration maxAge = Duration.max) {
-  import std.file : File, timeLastModified;
+  import std.file : read, timeLastModified;
+  import std.base64 : Base64;
+  import std.conv : to;
   import std.datetime.systime : Clock;
+  import std.path : expandTilde;
+  import msgpack : unpack;
 
-  const directory = "~/.cache/search-for";
-  const filename = directory ~ "/" ~ key;
+  const directory = "~/.cache/search".expandTilde;
+  const filename = directory ~ "/" ~ Base64.encode(cast(ubyte[]) key);
 
   Nullable!T nil;
 
@@ -32,13 +37,10 @@ Nullable!T cacheRead(T)(string key, Duration maxAge = Duration.max) {
       return nil;
     }
 
-    T cached;
+    ubyte[] data = cast(ubyte[]) read(filename);
+    T cached = data.unpack!T();
 
-    auto file = File(filename, "r");
-    file.rawRead(&cached);
-    file.close();
-
-    return cached;
+    return cast(Nullable!T) cached;
   } catch (Exception exception) {
   }
 

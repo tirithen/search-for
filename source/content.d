@@ -28,7 +28,8 @@ string getPageContent(string url, string userAgent = defaultUserAgent) {
       auto elementContent = element.innerText.strip;
       if (elementContent.length > 0) {
         const reduceNewLinePattern = regex(r"\n\s+\n", "g");
-        return elementContent.replaceAll(reduceNewLinePattern, "\n\n");
+        const cleaned = elementContent.replaceAll(reduceNewLinePattern, "\n\n");
+        return cleaned;
       }
     }
   } catch (Exception exception) {
